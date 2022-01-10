@@ -1,0 +1,33 @@
+{
+  "totalCount": 8,
+  "Quotes": [
+    "As yesterday's positive report card shows, childrens do learn when standards are high and results are measured",
+    "I hear there's rumors on the Internets that we're going to have a draft.",
+    "I am here to make an announcement that this Thursday, ticket counters and airplanes will fly out of Ronald Reagan Airport.",
+    "You teach a child to read, and he or her will be able to pass a literacy test.",
+    "They misunderestimated me.",
+    "Families is where our nation finds hope, where wings take dream.",
+    "I know how hard it is for you to put food on your family.",
+    "Rarely is the question asked: Is our children learning?"
+  ],
+  "Location": [
+    "Washington, D.C.",
+    "St. Louis, Missouri",
+    "Washington, D.C.",
+    "Townsend, Tennessee",
+    "Bentonville, Arkansas",
+    "LaCrosse, Wisconsin",
+    "Greater Nashua, New Hampshire",
+    "Florence, South Carolina"
+  ],
+    "Date": [
+    "September 26, 2007",
+    "October 8, 2004",
+    "October 3, 2001",
+    "February 21, 2001",
+    "November 6, 2000",
+    "October 18, 2000",
+    "January 27, 2000",
+    "January 11, 2000"
+  ]
+}

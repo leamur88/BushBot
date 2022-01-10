@@ -1,9 +1,10 @@
 import json
+import random
 import boto3
 from requests_oauthlib import OAuth1Session
 
 s3 = boto3.client('s3')
-
+bucket = 'bushbot'
 
 def postTweet(consumer_token, consumer_key, access_token, access_token_secret, msg):
     oauth = OAuth1Session(
@@ -28,8 +29,19 @@ def postTweet(consumer_token, consumer_key, access_token, access_token_secret, m
     # Saving the response as JSON
     return response.json()
 
+def chooseTweet():
+    key = 'quotes.json'
+    response = s3.get_object(Bucket=bucket, Key=key)
+    content = response['Body']
+    quotes = json.loads(content.read())
+
+    num = quotes['totalCount']
+    quotenum = random.randrange(0,num)
+    msg = '"'
+    msg += quotes['Quotes'][quotenum] + '"\n' + quotes['Date'][quotenum] + ',' + quotes['Location'][quotenum]
+    return msg
+
 def lambda_handler(event, context):
-    bucket = 'bushbot'
     key = 'secrets.json'
     response = s3.get_object(Bucket=bucket, Key=key)
     content = response['Body']
@@ -41,7 +53,7 @@ def lambda_handler(event, context):
     ats = secrets['access_key']
     print("Secrets", secrets)
 
-    msg = 'Hello World 8)!'
+    msg = chooseTweet()
 
     twitter_response = postTweet(ct, ck, at, ats, msg)
     return {
