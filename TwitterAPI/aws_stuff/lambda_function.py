@@ -38,7 +38,7 @@ def chooseTweet():
     num = quotes['totalCount']
     quotenum = random.randrange(0,num)
     msg = '"'
-    msg += quotes['Quotes'][quotenum] + '"\n' + quotes['Date'][quotenum] + ',' + quotes['Location'][quotenum]
+    msg += quotes['Quotes'][quotenum] + '" - \n' + quotes['Date'][quotenum] + ', ' + quotes['Location'][quotenum]
     return msg
 
 def lambda_handler(event, context):
