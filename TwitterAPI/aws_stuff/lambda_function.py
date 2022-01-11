@@ -6,14 +6,13 @@ from requests_oauthlib import OAuth1Session
 s3 = boto3.client('s3')
 bucket = 'bushbot'
 
-def postTweet(consumer_token, consumer_key, access_token, access_token_secret, msg):
+def postTweet(consumer_token, consumer_key, access_token, access_token_secret, payload):
     oauth = OAuth1Session(
         consumer_token,
         client_secret=consumer_key,
         resource_owner_key=access_token,
         resource_owner_secret=access_token_secret,
     )
-    payload = {"text": msg}
 
     response = oauth.post(
         "https://api.twitter.com/2/tweets",
@@ -28,6 +27,17 @@ def postTweet(consumer_token, consumer_key, access_token, access_token_secret, m
     print("Response code: {}".format(response.status_code))
     # Saving the response as JSON
     return response.json()
+
+def createPayload(msg, reply):
+    if reply != 0:
+        return {
+            "text": msg,
+            "reply": {
+                "in_reply_to_tweet_id": reply
+            }
+                }
+    else:
+        return {"text": msg}
 
 def chooseTweet():
     key = 'quotes.json'
@@ -54,8 +64,16 @@ def lambda_handler(event, context):
     print("Secrets", secrets)
 
     msg = chooseTweet()
+    reply_id = 0
+    while len(msg) > 280:
+        msg_to_send = msg[:281]
+        temp_payload = createPayload(msg_to_send, reply_id)
+        partial_response = json.dumps(postTweet(ct, ck, at, ats, temp_payload))
+        reply_id = partial_response['data']['id']
+        msg = msg[281:]
+    payload = createPayload(msg, reply_id)
+    twitter_response = postTweet(ct, ck, at, ats, payload)
 
-    twitter_response = postTweet(ct, ck, at, ats, msg)
     return {
         'statusCode': 200,
         'body': json.dumps(twitter_response)
