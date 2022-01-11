@@ -66,11 +66,11 @@ def lambda_handler(event, context):
     msg = chooseTweet()
     reply_id = 0
     while len(msg) > 280:
-        msg_to_send = msg[:281]
+        msg_to_send = msg[:280]
         temp_payload = createPayload(msg_to_send, reply_id)
-        partial_response = json.dumps(postTweet(ct, ck, at, ats, temp_payload))
+        partial_response = postTweet(ct, ck, at, ats, temp_payload)
         reply_id = partial_response['data']['id']
-        msg = msg[281:]
+        msg = msg[280:]
     payload = createPayload(msg, reply_id)
     twitter_response = postTweet(ct, ck, at, ats, payload)
 
